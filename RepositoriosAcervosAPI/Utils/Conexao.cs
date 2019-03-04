@@ -19,9 +19,6 @@ namespace RepositoriosAcervosAPI.Utils
 
         private static string CrieStringConexao()
         {
-            /* SSL Mode por padrão é none, pode se utilizar o SSL Mode Required
-             * Cria String de conexão para conectar no servidor de banco de dados que esta hospedado da Azure
-             */
             var sbConnectionString = new MySqlConnectionStringBuilder()
             {
                 Server = "mysqlserveracervo.mysql.database.azure.com",
@@ -33,8 +30,6 @@ namespace RepositoriosAcervosAPI.Utils
             return sbConnectionString.ToString();
         }
 
-
-        //Metodo de teste (POC) para verificar se está obtendo os dados da database
         public List<string> ObtenhaAcervos()
         {
             using (MySqlCommand command = new MySqlCommand("SELECT * FROM acervos", Connection))

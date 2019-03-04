@@ -12,7 +12,6 @@ namespace RepositoriosAcervosAPI.Controllers
     public class AcervosController : ControllerBase
     {
 
-        //Teste
         // GET api/values
         [HttpGet]
         [Route("lista")]
@@ -28,13 +27,14 @@ namespace RepositoriosAcervosAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            return $"celso{id}";
+            return string.Empty;
         }
 
         // POST api/values
         [HttpPost]
         public void Post([FromBody] string value)
         {
+
         }
 
         // PUT api/values/5
