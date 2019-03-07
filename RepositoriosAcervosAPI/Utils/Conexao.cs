@@ -47,5 +47,10 @@ namespace RepositoriosAcervosAPI.Utils
                 return listaAcervos;
             }
         }
+
+        public override string ToString()
+        {
+            return $"Conectado! Data Source: {Connection.DataSource}, Data Base: {Connection.Database}";
+        }
     }
 }

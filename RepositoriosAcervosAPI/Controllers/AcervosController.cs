@@ -14,13 +14,15 @@ namespace RepositoriosAcervosAPI.Controllers
 
         // GET api/values
         [HttpGet]
-        [Route("lista")]
         public ActionResult<IEnumerable<string>> Get()
         {
             Conexao conexao = new Conexao();
-            var teste = conexao.ObtenhaAcervos();
+            var retorno = conexao.ObtenhaAcervos();
 
-            return new string[] { "value1", "value2" };
+            return new string[] {
+                conexao.ToString(),
+                retorno.First(),
+            };
         }
 
         // GET api/values/5
