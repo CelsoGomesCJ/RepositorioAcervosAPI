@@ -20,14 +20,18 @@ namespace RepositoriosAcervosAPI.Controllers
             Conexao conexao = new Conexao();
             var teste = conexao.ObtenhaAcervos();
 
-            return teste;
+            return new string[] { "value1", "value2" };
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            return string.Empty;
+            //var teste = $"{id}";
+
+            //return new string[] { teste };
+
+            return $"Value: {id}";
         }
 
         // POST api/values
