@@ -1,30 +1,31 @@
 ﻿using MySql.Data.MySqlClient;
-using System;
+using Npgsql;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RepositoriosAcervosAPI.Utils
 {
     public class Conexao
     {
-        private MySqlConnection Connection;
+        private NpgsqlConnection Connection;
 
         public Conexao()
         {
             var connectionString = CrieStringConexao();
-            Connection = new MySqlConnection(connectionString);
+            Connection = new NpgsqlConnection(connectionString);
             Connection.Open();
         }
 
         private static string CrieStringConexao()
         {
-            var sbConnectionString = new MySqlConnectionStringBuilder()
+            var sbConnectionString = new NpgsqlConnectionStringBuilder()
             {
-                Server = "mysqlserveracervo.mysql.database.azure.com",
-                Database = "repositorioacervos",
-                UserID = "master@mysqlserveracervo",
-                Password = "Sysdba09",
+                Host = "ec2-54-221-201-212.compute-1.amazonaws.com",
+                Port = 5432,
+                Username = "tqwsgczicxjcvd",
+                Password = "e9526b4c0f4a848330f3bc6cc0b73270e75b5c576b78e4b04b462c661deae03e",
+                Database = "d4ji4tdursu951",
+                SslMode = SslMode.Require,
+                TrustServerCertificate = true
             };
 
             return sbConnectionString.ToString();
@@ -32,15 +33,15 @@ namespace RepositoriosAcervosAPI.Utils
 
         public List<string> ObtenhaAcervos()
         {
-            using (MySqlCommand command = new MySqlCommand("SELECT * FROM acervos", Connection))
+            using (NpgsqlCommand command = new NpgsqlCommand("SELECT * FROM acervos", Connection))
             {
                 List<string> listaAcervos = new List<string>();
 
-                using (MySqlDataReader dr = command.ExecuteReader())
+                using (NpgsqlDataReader dr = command.ExecuteReader())
                 {
                     while (dr.Read())
                     {
-                        listaAcervos.Add($"{dr["id"]}-{dr["nome"]}-{dr["sigla"]}");
+                        listaAcervos.Add($"{dr["id"]}-{dr["nome"]}");
                     }
                 }
 
