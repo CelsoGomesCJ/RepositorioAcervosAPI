@@ -1,5 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using Npgsql;
+using NpgsqlTypes;
+using RepositorioAcervosAPI.Models;
 using System.Collections.Generic;
 
 namespace RepositoriosAcervosAPI.Utils
@@ -47,6 +49,16 @@ namespace RepositoriosAcervosAPI.Utils
 
                 return listaAcervos;
             }
+        }
+
+        public void InsiraAcervo(Acervo acervo)
+        {
+            var cmd = Connection.CreateCommand();
+            cmd.CommandText = "INSERT INTO acervos(id, nome) VALUES(@id, @nome)";
+            cmd.Parameters.Add("@id", NpgsqlDbType.Integer);
+            cmd.Parameters.Add("@id", NpgsqlDbType.Varchar);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
         }
 
         public override string ToString()
