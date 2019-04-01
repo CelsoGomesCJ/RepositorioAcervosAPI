@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RepositorioAcervosAPI.Models;
+using RepositorioAcervosAPI.Persistencia;
 using RepositoriosAcervosAPI.Utils;
 
 namespace RepositoriosAcervosAPI.Controllers
@@ -11,27 +12,14 @@ namespace RepositoriosAcervosAPI.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    public class AcervosController : ControllerBase
+    public class LoginController : ControllerBase
     {
         //Deploy Heroku
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            try
-            {
-                Conexao conexao = new Conexao();
-                var retorno = conexao.ObtenhaAcervos();
-
-                return new string[] {
-                    conexao.ToString(),
-                    retorno.First(),
-                };
-            }
-            catch (Exception ex)
-            {
-                return new string[] { ex.Message };
-            }
+             return new string[] { "Value123" };
         }
 
         // GET api/values/5
@@ -41,23 +29,18 @@ namespace RepositoriosAcervosAPI.Controllers
             return $"Value: {id}";
         }
 
+        //RealizeLogin
         // POST api/values
         [HttpPost]
-        public ActionResult<string> Post([FromBody] Acervo acervo)
+        public ActionResult<string> Post([FromBody] Discente discente)
         {
-            try
-            {
-                Conexao conexao = new Conexao();
-                conexao.InsiraAcervo(acervo);
+            MapeamentoLogin mapeador = new MapeamentoLogin();
+            mapeador.ValideLogin(discente.email, discente.senha);
 
-                return $"Acervo: {acervo.Descricao} incluído com sucesso!";
-            }
-            catch (Exception ex)
-            {
-                return $"{ ex.Message }";
-            }
+            return $"{ "Validado Com Sucesso" }";
         }
 
+        //CrieConta()
         // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
