@@ -1,7 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using Npgsql;
 using NpgsqlTypes;
-using RepositorioAcervosAPI.Models;
+using RepositorioAcervosAPI.Dominio;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
