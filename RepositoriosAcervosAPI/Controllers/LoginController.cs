@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using RepositorioAcervosAPI.Dominio;
 using RepositorioAcervosAPI.Models;
 using RepositorioAcervosAPI.Persistencia;
+using RepositorioAcervosAPI.Utils;
 using RepositoriosAcervosAPI.Utils;
 
 namespace RepositoriosAcervosAPI.Controllers
@@ -14,45 +16,45 @@ namespace RepositoriosAcervosAPI.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        //Deploy Heroku
-        // GET api/values
+
+        //Realize Login
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-             return new string[] { "Value123" };
-        }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return $"Value: {id}";
-        }
-
-        //RealizeLogin
-        // POST api/values
         [HttpPost]
-        public ActionResult<string> Post([FromBody] Discente discente)
+        public RetornoLogin Post([FromBody] Discente discente)
         {
+            var retorno = new RetornoLogin();
+
             MapeamentoLogin mapeador = new MapeamentoLogin();
-            mapeador.ValideLogin(discente.email, discente.senha);
 
-            return $"{ "Validado Com Sucesso" }";
+            if (mapeador.UsuarioEhValido(discente.email, discente.senha))
+            {
+                retorno.Codigo = 0;
+                retorno.Mensagem = "Usuário autenticado";
+                retorno.Token = GereTokenDiscente(discente);
+            }
+            else
+            {
+                retorno.Codigo = 1;
+                retorno.Mensagem = "Usuário inválido";
+            }
+
+            return retorno;
         }
 
-        //CrieConta()
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        private string GereTokenDiscente(Discente discente)
         {
-           
+            return Utilidades.ObtenhaHashSha256($"{discente.nome}{discente.senha}");
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+        ////CrieConta
+        //[HttpPost]
+        //public ActionResult<string> Post(string, email, senha)
+        //{
+        //    MapeamentoLogin mapeador = new MapeamentoLogin();
+        //    mapeador.RegistreUsuario(discente);
 
-        }
+        //    return $"{ "Registrado Com Sucesso"}";
+        //}
+
     }
 }
