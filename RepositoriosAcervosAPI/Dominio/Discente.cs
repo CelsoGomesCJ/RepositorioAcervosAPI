@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RepositorioAcervosAPI.Models
+namespace RepositorioAcervosAPI.Dominio
 {
     public class Discente
     {
@@ -11,5 +11,6 @@ namespace RepositorioAcervosAPI.Models
         public string nome { get; set; }
         public string email { get; set; }
         public string senha { get; set; }
+        public string token { get; set; }
     }
 }
