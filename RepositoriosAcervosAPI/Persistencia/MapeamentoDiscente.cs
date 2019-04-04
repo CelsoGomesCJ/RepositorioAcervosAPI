@@ -1,5 +1,5 @@
 ﻿using Npgsql;
-using RepositorioAcervosAPI.Models;
+using RepositorioAcervosAPI.Dominio;
 using RepositoriosAcervosAPI.Utils;
 using System;
 using System.Collections.Generic;
