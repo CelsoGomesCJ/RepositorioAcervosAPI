@@ -18,9 +18,9 @@ namespace RepositoriosAcervosAPI.Controllers
     {
 
         //Realize Login
-        [HttpGet]
         [HttpPost]
-        public RetornoLogin Post([FromBody] Discente discente)
+        [Route("registrarusuario")]
+        public RetornoLogin RegistrarUsuario([FromBody] Discente discente)
         {
             var retorno = new RetornoLogin();
 
@@ -41,20 +41,18 @@ namespace RepositoriosAcervosAPI.Controllers
             return retorno;
         }
 
+
+        [HttpGet]
+        [Route("realizelogin")]
+        public RetornoLogin RealizeLogin([FromBody] Discente discente)
+        {
+            return new RetornoLogin();
+        }
+
         private string GereTokenDiscente(Discente discente)
         {
             return Utilidades.ObtenhaHashSha256($"{discente.nome}{discente.senha}");
         }
-
-        ////CrieConta
-        //[HttpPost]
-        //public ActionResult<string> Post(string, email, senha)
-        //{
-        //    MapeamentoLogin mapeador = new MapeamentoLogin();
-        //    mapeador.RegistreUsuario(discente);
-
-        //    return $"{ "Registrado Com Sucesso"}";
-        //}
 
     }
 }

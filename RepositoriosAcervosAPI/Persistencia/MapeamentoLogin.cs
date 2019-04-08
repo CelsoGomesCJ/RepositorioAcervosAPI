@@ -58,7 +58,7 @@ namespace RepositorioAcervosAPI.Persistencia
 
         private string ObtenhaConsultaValidacaoLogin()
         {
-            return @"SELECT * FROM DISCENTE WHERE EMAIL = @EMAIL AND SENHA = @SENHA";
+            return @"SELECT * FROM DISCENTE WHERE EMAIL = 'celsogomes22@gmail.com' AND SENHA = 'mamaue22'";
         }
     }
 }
