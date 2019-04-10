@@ -22,11 +22,13 @@ namespace RepositoriosAcervosAPI.Utils
         {
             var sbConnectionString = new NpgsqlConnectionStringBuilder()
             {
-                Host = "localhost",
+                Host = "ec2-54-221-201-212.compute-1.amazonaws.com",
                 Port = 5432,
-                Username = "postgres",
-                Password = "postgres",
-                Database = "bdlocalacervos",
+                Username = "tqwsgczicxjcvd",
+                Password = "e9526b4c0f4a848330f3bc6cc0b73270e75b5c576b78e4b04b462c661deae03e",
+                Database = "d4ji4tdursu951",
+                SslMode = SslMode.Require,
+                TrustServerCertificate = true
             };
 
             return sbConnectionString.ToString();

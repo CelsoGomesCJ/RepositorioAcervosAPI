@@ -20,22 +20,22 @@ namespace RepositoriosAcervosAPI.Controllers
         //Realize Login
         [HttpPost]
         [Route("registrarusuario")]
-        public RetornoLogin RegistrarUsuario([FromBody] Discente discente)
+        public RetornoPadrao RegistrarUsuario([FromBody] Discente discente)
         {
-            var retorno = new RetornoLogin();
+            var mapeadorDiscente = new MapeamentoDiscente();
+            var retorno = new RetornoPadrao();
 
-            MapeamentoLogin mapeador = new MapeamentoLogin();
-
-            if (mapeador.UsuarioEhValido(discente.email, discente.senha))
+            try
             {
+                mapeadorDiscente.RegistreUsuario(discente);
                 retorno.Codigo = 0;
-                retorno.Mensagem = "Usuário autenticado";
+                retorno.Mensagem = "Usuário registrado com sucesso!";
                 retorno.Token = GereTokenDiscente(discente);
             }
-            else
+            catch(Exception erro)
             {
                 retorno.Codigo = 1;
-                retorno.Mensagem = "Usuário inválido";
+                retorno.Mensagem = $"Falha ao criar usuário {erro.Message}";
             }
 
             return retorno;
@@ -44,10 +44,18 @@ namespace RepositoriosAcervosAPI.Controllers
 
         [HttpGet]
         [Route("realizelogin")]
-        public RetornoLogin RealizeLogin([FromBody] Discente discente)
+        public string RealizeLogin([FromBody] Discente discente)
         {
-            return new RetornoLogin();
+            return $"{discente.nome} chegou aqui na API";
         }
+
+        [HttpGet]
+        [Route("obtenhateste")]
+        public string ObtenhaInformacoesBancoTeste()
+        {
+            return new MapeamentoLogin().ObtenhaInformacoesBancoTeste();
+        }
+
 
         private string GereTokenDiscente(Discente discente)
         {

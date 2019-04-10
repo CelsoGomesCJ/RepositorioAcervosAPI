@@ -29,36 +29,42 @@ namespace RepositorioAcervosAPI.Persistencia
             }
         }
 
-        public bool RegistreUsuario(Discente discente)
+        public string ObtenhaInformacoesBancoTeste()
         {
+            var retorno = string.Empty;
+
             using (var conexao = Conexao.Instancia.CrieConexao())
             {
                 using (var comando = conexao.CreateCommand())
                 {
-                    comando.CommandText = @"INSERT INTO DISCENTE (NOME, EMAIL, SENHA) VALUES(@NOME, @EMAIL, @SENHA)";
+                    comando.CommandText = ObtenhaConsultaInformacoesBancoTeste();
 
-                    comando.Parameters.Add(CrieParametro("@NOME", NpgsqlDbType.Varchar, 100));
-                    comando.Parameters.Add(CrieParametro("@EMAIL", NpgsqlDbType.Varchar, 100));
-                    comando.Parameters.Add(CrieParametro("@SENHA", NpgsqlDbType.Varchar, 10));
-                    comando.Prepare();
-                    comando.Parameters["@NOME"].Value = discente.nome;
-                    comando.Parameters["@EMAIL"].Value = discente.email;
-                    comando.Parameters["@SENHA"].Value = discente.senha;
-                    comando.ExecuteNonQuery(); 
+                    using (DbDataReader dataReader = comando.ExecuteReader())
+                    {
+                        while (dataReader.Read())
+                        {
+                            var nome = dataReader.GetString(0);
+                            var allow = dataReader.GetBoolean(1);
+
+                            retorno = $"Database: {nome} - Permite Conexões: {allow}";
+                        }
+                    }
                 }
             }
-            return true;
-        }
 
-
-        private NpgsqlParameter CrieParametro(string campo, NpgsqlDbType tipo, int size)
-        {
-            return new NpgsqlParameter(campo, tipo, size); 
+            return retorno;
         }
 
         private string ObtenhaConsultaValidacaoLogin()
         {
             return @"SELECT * FROM DISCENTE WHERE EMAIL = 'celsogomes22@gmail.com' AND SENHA = 'mamaue22'";
+        }
+
+        private string ObtenhaConsultaInformacoesBancoTeste()
+        {
+            return @"SELECT datname, 
+                     datallowconn FROM pg_database
+                     where datname like '%d4ji4tdursu951%'";
         }
     }
 }
