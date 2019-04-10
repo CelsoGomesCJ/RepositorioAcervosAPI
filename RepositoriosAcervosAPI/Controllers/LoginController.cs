@@ -42,7 +42,7 @@ namespace RepositoriosAcervosAPI.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("realizelogin")]
         public RetornoLogin RealizeLogin([FromBody] Discente discente)
         {
