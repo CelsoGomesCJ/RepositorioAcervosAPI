@@ -19,7 +19,7 @@ namespace RepositorioAcervosAPI.Persistencia
             {
                 using (var comando = conexao.CreateCommand())
                 {
-                    comando.CommandText = ObtenhaConsultaValidacaoLogin();
+                    comando.CommandText = ObtenhaConsultaValidacaoLogin(email, senha);
 
                     using (DbDataReader dataReader = comando.ExecuteReader())
                     {
@@ -55,9 +55,9 @@ namespace RepositorioAcervosAPI.Persistencia
             return retorno;
         }
 
-        private string ObtenhaConsultaValidacaoLogin()
+        private string ObtenhaConsultaValidacaoLogin(string email, string senha)
         {
-            return @"SELECT * FROM DISCENTE WHERE EMAIL = 'celsogomes22@gmail.com' AND SENHA = 'mamaue22'";
+            return $"SELECT * FROM DISCENTE WHERE EMAIL = '{email}' AND SENHA = '{senha}'";
         }
 
         private string ObtenhaConsultaInformacoesBancoTeste()

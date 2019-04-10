@@ -35,7 +35,7 @@ namespace RepositoriosAcervosAPI.Controllers
             catch(Exception erro)
             {
                 retorno.Codigo = 1;
-                retorno.Mensagem = $"Falha ao criar usuário {erro.Message}";
+                retorno.Mensagem = $"Falha ao criar usuário";
             }
 
             return retorno;
@@ -44,9 +44,26 @@ namespace RepositoriosAcervosAPI.Controllers
 
         [HttpGet]
         [Route("realizelogin")]
-        public string RealizeLogin([FromBody] Discente discente)
+        public RetornoLogin RealizeLogin([FromBody] Discente discente)
         {
-            return $"{discente.nome} chegou aqui na API";
+            var mapeadorLogin = new MapeamentoLogin();
+
+            if (mapeadorLogin.UsuarioEhValido(discente.email, discente.senha))
+            {
+                return new RetornoLogin()
+                {
+                    Codigo = 0,
+                    Mensagem = "Usuário autenticado com sucesso!",
+                    Token = GereTokenDiscente(discente),
+                };
+            }
+
+            return new RetornoLogin()
+            {
+                Codigo = 1,
+                Mensagem = "Usuário Inválido!",
+            };
+           
         }
 
         [HttpGet]
@@ -55,7 +72,6 @@ namespace RepositoriosAcervosAPI.Controllers
         {
             return new MapeamentoLogin().ObtenhaInformacoesBancoTeste();
         }
-
 
         private string GereTokenDiscente(Discente discente)
         {
