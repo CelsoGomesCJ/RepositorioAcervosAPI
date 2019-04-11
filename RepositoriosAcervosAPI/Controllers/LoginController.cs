@@ -25,12 +25,14 @@ namespace RepositoriosAcervosAPI.Controllers
             var mapeadorDiscente = new MapeamentoDiscente();
             var retorno = new RetornoPadrao();
 
+            var hashSenha = Utilidades.ObtenhaHashSha256(discente.senha);
+            discente.senha = hashSenha;
+
             try
             {
                 mapeadorDiscente.RegistreUsuario(discente);
                 retorno.Codigo = 0;
                 retorno.Mensagem = "Usuário registrado com sucesso!";
-                retorno.Token = GereTokenDiscente(discente);
             }
             catch(Exception erro)
             {
@@ -44,25 +46,22 @@ namespace RepositoriosAcervosAPI.Controllers
 
         [HttpPost]
         [Route("realizelogin")]
-        public RetornoLogin RealizeLogin([FromBody] Discente discente)
+        public RetornoPadrao RealizeLogin([FromBody] Discente discente)
         {
             var mapeadorLogin = new MapeamentoLogin();
+            var mapeadorDiscente = new MapeamentoDiscente();
+
+            var hashSenha = Utilidades.ObtenhaHashSha256(discente.senha);
+            discente.senha = hashSenha;
 
             if (mapeadorLogin.UsuarioEhValido(discente.email, discente.senha))
             {
-                return new RetornoLogin()
-                {
-                    Codigo = 0,
-                    Mensagem = "Usuário autenticado com sucesso!",
-                    Token = GereTokenDiscente(discente),
-                };
+                var retorno = RetornoPadrao.CrieSucessoLogin();
+                retorno.Result = mapeadorDiscente.ObtenhaDiscente(discente.email, discente.senha);
+                return retorno;
             }
 
-            return new RetornoLogin()
-            {
-                Codigo = 1,
-                Mensagem = "Usuário Inválido!",
-            };
+            return RetornoPadrao.CrieFalhaLogin();
            
         }
 
@@ -71,11 +70,6 @@ namespace RepositoriosAcervosAPI.Controllers
         public string ObtenhaInformacoesBancoTeste()
         {
             return new MapeamentoLogin().ObtenhaInformacoesBancoTeste();
-        }
-
-        private string GereTokenDiscente(Discente discente)
-        {
-            return Utilidades.ObtenhaHashSha256($"{discente.nome}{discente.senha}");
         }
 
     }

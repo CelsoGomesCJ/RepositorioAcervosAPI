@@ -7,7 +7,6 @@ namespace RepositorioAcervosAPI.Models
 {
     public class RetornoPadrao : RetornoAbstrato
     {
-        public string Token { get; set; }
         public dynamic Result { get; set; }
         public static RetornoPadrao CrieFalhaLogin()
         {
@@ -15,6 +14,15 @@ namespace RepositorioAcervosAPI.Models
             {
                 Codigo = 1,
                 Mensagem = "Nao autorizado"
+            };
+        }
+
+        public static RetornoPadrao CrieSucessoLogin()
+        {
+            return new RetornoPadrao
+            {
+                Codigo = 0,
+                Mensagem = "Autenticado com sucesso!"
             };
         }
     }
