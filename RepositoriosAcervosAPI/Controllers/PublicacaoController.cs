@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RepositorioAcervosAPI.Dominio;
+using RepositorioAcervosAPI.Models;
+using RepositorioAcervosAPI.Persistencia;
 
 namespace RepositorioAcervosAPI.Controllers
 {
@@ -29,9 +32,24 @@ namespace RepositorioAcervosAPI.Controllers
         //Registrar Publicacao
         [HttpPost]
         [Route("registrarpublicacao")]
-        public void Post([FromBody] string value)
+        public RetornoPadrao RealizePublicacao([FromBody] Publicacao publicacao)
         {
+            var mapeadorPublicacao = new MapeamentoPublicacao();
+            var retorno = new RetornoPadrao();
 
+            try
+            {
+                mapeadorPublicacao.realizePublicacao(publicacao);
+                retorno.Codigo = 0;
+                retorno.Mensagem = "Publicacao realizada com sucesso!";
+            }
+            catch (Exception)
+            {
+                retorno.Codigo = 1;
+                retorno.Mensagem = $"Falha ao realizar publicação";
+            }
+
+            return retorno;
         }
 
     }

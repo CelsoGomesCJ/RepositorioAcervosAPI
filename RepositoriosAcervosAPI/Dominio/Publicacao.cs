@@ -14,5 +14,6 @@ namespace RepositorioAcervosAPI.Dominio
         public string resumo { get; set; }
         public string autores { get; set; }
         public byte[] documento { get; set; }
+        public long discenteid { get; set; }
     }
 }
