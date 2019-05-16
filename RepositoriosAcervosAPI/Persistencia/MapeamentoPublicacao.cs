@@ -17,7 +17,7 @@ namespace RepositorioAcervosAPI.Persistencia
             {
                 using (var comando = conexao.CreateCommand())
                 {
-                    comando.CommandText = obtenhaComandoDeInsercaoPublicacao();
+                    comando.CommandText = ObtenhaComandoDeInsercaoPublicacao();
 
                     comando.Parameters.Add(CrieParametro("@TITULO", NpgsqlDbType.Varchar));
                     comando.Parameters.Add(CrieParametro("@SUBTITULO", NpgsqlDbType.Varchar));
@@ -48,7 +48,7 @@ namespace RepositorioAcervosAPI.Persistencia
             return new NpgsqlParameter(campo, tipo);
         }
 
-        private string obtenhaComandoDeInsercaoPublicacao()
+        private string ObtenhaComandoDeInsercaoPublicacao()
         {
             return @"INSERT INTO public.publicacao(TITULO, SUBTITULO, PALAVRACHAVE, RESUMO, AUTORES, DOCUMENTO, DATA_PUBLICACAO, DATA_REMOCAO, ID_DISCENTE)
 	                VALUES (@TITULO, @SUBTITULO, @PALAVRACHAVE, @RESUMO, @AUTORES, @DOCUMENTO, @DATA_PUBLICACAO, @DATA_REMOCAO, @ID_DISCENTE)";
