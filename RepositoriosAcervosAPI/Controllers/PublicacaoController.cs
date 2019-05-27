@@ -52,16 +52,16 @@ namespace RepositorioAcervosAPI.Controllers
             return retorno;
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("obtenhapublicacoespeloid")]
-        public RetornoPadrao ObtenhaPublicacoesPeloId([FromBody] int idpublicacao)
+        public RetornoPadrao ObtenhaPublicacoesPeloId(int idUsuario)
         {
             var mapeadorPublicacao = new MapeamentoPublicacao();
             var retorno = new RetornoPadrao();
 
             try
             {
-                retorno.Result = mapeadorPublicacao.ObtenhaPublicacoesPeloId(idpublicacao);
+                retorno.Result = mapeadorPublicacao.ObtenhaPublicacoesPeloId(idUsuario);
                 retorno.Codigo = 0;
                 retorno.Mensagem = "";
             }

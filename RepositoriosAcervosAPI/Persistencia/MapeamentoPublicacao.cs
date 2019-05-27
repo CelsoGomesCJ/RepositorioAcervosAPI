@@ -4,6 +4,7 @@ using RepositorioAcervosAPI.Dominio;
 using RepositoriosAcervosAPI.Utils;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -43,39 +44,43 @@ namespace RepositorioAcervosAPI.Persistencia
             }
         }
 
-        public List<Publicacao> ObtenhaPublicacoesPeloId(int publicacao)
+        public List<Publicacao> ObtenhaPublicacoesPeloId(int idUsuario)
         {
             var publicacoesDoUsuario = new List<Publicacao>();
 
             using (var conexao = Conexao.Instancia.CrieConexao())
             {
-                conexao.Open();
-
                 using (var comando = conexao.CreateCommand())
                 {
                     comando.CommandText = ObtenhaConsultaPublicacoesDoUsuario();
-                    comando.Parameters.Add(CrieParametroWithValue("@ID_DISCENTE", publicacao));
+                    comando.Parameters.Add(CrieParametroWithValue("@ID_DISCENTE", idUsuario));
 
                     using (var dr = comando.ExecuteReader())
                     {
                         while (dr.Read())
                         {
-                            publicacoesDoUsuario.Add(new Publicacao {
-                                Id = dr.GetInt64(0),
-                                titulo = dr.GetString(1),
-                                subtitulo = dr.GetString(2),
-                                palavrachave = dr.GetString(3),
-                                resumo = dr.GetString(4),
-                                autores = dr.GetString(5),
-                                documento = (byte[])dr.GetValue(6),
-                                discenteid = dr.GetInt64(9)
-                            });
+                            var publicacao = MapeiePublicacao(dr);
+                            publicacoesDoUsuario.Add(publicacao);
                         }
                     }
                 }
             }
 
             return publicacoesDoUsuario;
+        }
+
+        private Publicacao MapeiePublicacao(DbDataReader dr)
+        {
+            var publicacao = new Publicacao();
+            publicacao.Id = dr.GetInt64(0);
+            publicacao.titulo = dr.GetString(1);
+            publicacao.subtitulo = dr.GetString(2);
+            publicacao.palavrachave = dr.GetString(3);
+            publicacao.resumo = dr.GetString(4);
+            publicacao.autores = dr.GetString(5);
+            publicacao.discenteid = dr.GetInt64(9);
+
+            return publicacao;
         }
 
         private static string ObtenhaConsultaPublicacoesDoUsuario()
