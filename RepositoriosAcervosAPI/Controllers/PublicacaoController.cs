@@ -52,5 +52,26 @@ namespace RepositorioAcervosAPI.Controllers
             return retorno;
         }
 
+        [HttpPost]
+        [Route("obtenhapublicacoespeloid")]
+        public RetornoPadrao ObtenhaPublicacoesPeloId([FromBody] int idpublicacao)
+        {
+            var mapeadorPublicacao = new MapeamentoPublicacao();
+            var retorno = new RetornoPadrao();
+
+            try
+            {
+                retorno.Result = mapeadorPublicacao.ObtenhaPublicacoesPeloId(idpublicacao);
+                retorno.Codigo = 0;
+                retorno.Mensagem = "";
+            }
+            catch (Exception)
+            {
+                retorno.Codigo = 1;
+                retorno.Mensagem = $"Falha ao obter as publicacões do usuário";
+            }
+
+            return retorno;
+        }
     }
 }

@@ -43,9 +43,54 @@ namespace RepositorioAcervosAPI.Persistencia
             }
         }
 
+        public List<Publicacao> ObtenhaPublicacoesPeloId(int publicacao)
+        {
+            var publicacoesDoUsuario = new List<Publicacao>();
+
+            using (var conexao = Conexao.Instancia.CrieConexao())
+            {
+                conexao.Open();
+
+                using (var comando = conexao.CreateCommand())
+                {
+                    comando.CommandText = ObtenhaConsultaPublicacoesDoUsuario();
+                    comando.Parameters.Add(CrieParametroWithValue("@ID_DISCENTE", publicacao));
+
+                    using (var dr = comando.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            publicacoesDoUsuario.Add(new Publicacao {
+                                Id = dr.GetInt64(0),
+                                titulo = dr.GetString(1),
+                                subtitulo = dr.GetString(2),
+                                palavrachave = dr.GetString(3),
+                                resumo = dr.GetString(4),
+                                autores = dr.GetString(5),
+                                documento = (byte[])dr.GetValue(6),
+                                discenteid = dr.GetInt64(9)
+                            });
+                        }
+                    }
+                }
+            }
+
+            return publicacoesDoUsuario;
+        }
+
+        private static string ObtenhaConsultaPublicacoesDoUsuario()
+        {
+            return @"SELECT * FROM PUBLICACAO WHERE ID_DISCENTE = @ID_DISCENTE";
+        }
+
         private NpgsqlParameter CrieParametro(string campo, NpgsqlDbType tipo)
         {
             return new NpgsqlParameter(campo, tipo);
+        }
+
+        private NpgsqlParameter CrieParametroWithValue(string campo, object value)
+        {
+            return new NpgsqlParameter(campo, value);
         }
 
         private string ObtenhaComandoDeInsercaoPublicacao()
