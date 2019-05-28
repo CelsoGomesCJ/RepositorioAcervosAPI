@@ -69,8 +69,6 @@ namespace RepositorioAcervosAPI.Persistencia
 
         public Discente ObtenhaDiscente(string email, string senha)
         {
-            //var discentes = new List<Discente>();
-
             using (var conexao = Conexao.Instancia.CrieConexao())
             {
                 using (var comando = conexao.CreateCommand())
