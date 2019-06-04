@@ -37,7 +37,6 @@ namespace RepositorioAcervosAPI.Persistencia
                     comando.Parameters["@AUTORES"].Value = publicacao.autores;
                     comando.Parameters["@DOCUMENTO"].Value = publicacao.documento;
                     comando.Parameters["@DATA_PUBLICACAO"].Value = DateTime.Now;
-                    comando.Parameters["@DATA_REMOCAO"].Value = DBNull.Value;
                     comando.Parameters["@ID_DISCENTE"].Value = publicacao.discenteid;
                     comando.ExecuteNonQuery();
                 }
