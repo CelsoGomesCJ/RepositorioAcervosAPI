@@ -43,10 +43,10 @@ namespace RepositorioAcervosAPI.Controllers
                 retorno.Codigo = 0;
                 retorno.Mensagem = "Publicação realizada com sucesso!";
             }
-            catch (Exception)
+            catch (Exception erro)
             {
                 retorno.Codigo = 1;
-                retorno.Mensagem = $"Falha ao realizar publicação teste 28/05";
+                retorno.Mensagem = $"Falha ao realizar publicação teste 28/05 \n:{erro.Message}";
             }
 
             //Código Teste
