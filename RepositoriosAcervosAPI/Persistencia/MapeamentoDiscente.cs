@@ -84,9 +84,7 @@ namespace RepositorioAcervosAPI.Persistencia
                     }
                 }
             }
-
             return null;
-
         }
 
         private Discente MapeieDiscente(DbDataReader dataReader)

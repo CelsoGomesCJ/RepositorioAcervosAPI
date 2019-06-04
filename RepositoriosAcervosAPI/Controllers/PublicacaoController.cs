@@ -41,7 +41,7 @@ namespace RepositorioAcervosAPI.Controllers
             {
                 mapeadorPublicacao.realizePublicacao(publicacao);
                 retorno.Codigo = 0;
-                retorno.Mensagem = "Publicacao realizada com sucesso teste 28/05!";
+                retorno.Mensagem = "Publicação realizada com sucesso!";
             }
             catch (Exception)
             {

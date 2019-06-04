@@ -5,6 +5,7 @@ using RepositoriosAcervosAPI.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,7 +28,6 @@ namespace RepositorioAcervosAPI.Persistencia
                     comando.Parameters.Add(CrieParametro("@AUTORES", NpgsqlDbType.Varchar));
                     comando.Parameters.Add(CrieParametro("@DOCUMENTO", NpgsqlDbType.Bytea));
                     comando.Parameters.Add(CrieParametro("@DATA_PUBLICACAO", NpgsqlDbType.Date));
-                    comando.Parameters.Add(CrieParametro("@DATA_REMOCAO", NpgsqlDbType.Date));
                     comando.Parameters.Add(CrieParametro("@ID_DISCENTE", NpgsqlDbType.Integer));
                     comando.Prepare();
                     comando.Parameters["@TITULO"].Value = publicacao.titulo;
@@ -37,7 +37,6 @@ namespace RepositorioAcervosAPI.Persistencia
                     comando.Parameters["@AUTORES"].Value = publicacao.autores;
                     comando.Parameters["@DOCUMENTO"].Value = publicacao.documento;
                     comando.Parameters["@DATA_PUBLICACAO"].Value = DateTime.Now;
-                    comando.Parameters["@DATA_REMOCAO"].Value = null;
                     comando.Parameters["@ID_DISCENTE"].Value = publicacao.discenteid;
                     comando.ExecuteNonQuery();
                 }
@@ -100,8 +99,8 @@ namespace RepositorioAcervosAPI.Persistencia
 
         private string ObtenhaComandoDeInsercaoPublicacao()
         {
-            return @"INSERT INTO public.publicacao(TITULO, SUBTITULO, PALAVRACHAVE, RESUMO, AUTORES, DOCUMENTO, DATA_PUBLICACAO, DATA_REMOCAO, ID_DISCENTE)
-	                VALUES (@TITULO, @SUBTITULO, @PALAVRACHAVE, @RESUMO, @AUTORES, @DOCUMENTO, @DATA_PUBLICACAO, @DATA_REMOCAO, @ID_DISCENTE)";
+            return @"INSERT INTO public.publicacao(TITULO, SUBTITULO, PALAVRACHAVE, RESUMO, AUTORES, DOCUMENTO, DATA_PUBLICACAO, ID_DISCENTE)
+	                VALUES (@TITULO, @SUBTITULO, @PALAVRACHAVE, @RESUMO, @AUTORES, @DOCUMENTO, @DATA_PUBLICACAO, @ID_DISCENTE)";
         }
     }
 }
