@@ -13,6 +13,8 @@ namespace RepositorioAcervosAPI.Persistencia
 {
     public class MapeamentoPublicacao
     {
+
+        //Depois ajusta para pegar a data de publicação de acordo com o LOCALTIMESTAMP
         public void realizePublicacao(Publicacao publicacao)
         {
             using (var conexao = Conexao.Instancia.CrieConexao())
@@ -51,7 +53,7 @@ namespace RepositorioAcervosAPI.Persistencia
             {
                 using (var comando = conexao.CreateCommand())
                 {
-                    comando.CommandText = ObtenhaConsultaPublicacoesDoUsuario();
+                    comando.CommandText = ObtenhaConsultaDeletePublicacaoPeloId();
                     comando.Parameters.Add(CrieParametroWithValue("@ID_DISCENTE", idUsuario));
 
                     using (var dr = comando.ExecuteReader())
@@ -68,6 +70,19 @@ namespace RepositorioAcervosAPI.Persistencia
             return publicacoesDoUsuario;
         }
 
+        public void DeletePublicacaoPeloId(int idPublicacao)
+        {
+            using (var conexao = Conexao.Instancia.CrieConexao())
+            {
+                using (var comando = conexao.CreateCommand())
+                {
+                    comando.CommandText = ObtenhaConsultaDeletePublicacaoPeloId();
+                    comando.Parameters.Add(CrieParametroWithValue("@ID", idPublicacao));
+                    comando.ExecuteNonQuery();
+                }
+            }
+        }
+
         private Publicacao MapeiePublicacao(DbDataReader dr)
         {
             var publicacao = new Publicacao();
@@ -82,9 +97,9 @@ namespace RepositorioAcervosAPI.Persistencia
             return publicacao;
         }
 
-        private static string ObtenhaConsultaPublicacoesDoUsuario()
+        private string ObtenhaConsultaDeletePublicacaoPeloId()
         {
-            return @"SELECT * FROM PUBLICACAO WHERE ID_DISCENTE = @ID_DISCENTE";
+            return @"DELETE FROM PUBLICACAO WHERE ID = @ID";
         }
 
         private NpgsqlParameter CrieParametro(string campo, NpgsqlDbType tipo)

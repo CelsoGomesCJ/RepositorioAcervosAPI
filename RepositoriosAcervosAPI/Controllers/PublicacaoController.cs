@@ -76,5 +76,29 @@ namespace RepositorioAcervosAPI.Controllers
 
             return retorno;
         }
+
+        [HttpPost]
+        [Route("deletepublicacaopeloid")]
+        public RetornoPadrao DeletePublicacaoPeloId(int idUsuario)
+        {
+
+            var mapeadorPublicacao = new MapeamentoPublicacao();
+            var retorno = new RetornoPadrao();
+
+            try
+            {
+
+                mapeadorPublicacao.DeletePublicacaoPeloId(idUsuario);
+                retorno.Codigo = 0;
+                retorno.Mensagem = "";
+            }
+            catch (Exception)
+            {
+                retorno.Codigo = 1;
+                retorno.Mensagem =  $"Falha ao deletar a publicação";
+            }
+
+            return retorno;
+        }
     }
 }
