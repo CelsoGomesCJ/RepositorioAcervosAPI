@@ -79,7 +79,7 @@ namespace RepositorioAcervosAPI.Controllers
 
         [HttpPost]
         [Route("deletepublicacaopeloid")]
-        public RetornoPadrao DeletePublicacaoPeloId(int idUsuario)
+        public RetornoPadrao DeletePublicacaoPeloId([FromBody] Publicacao publicacao)
         {
 
             var mapeadorPublicacao = new MapeamentoPublicacao();
@@ -88,9 +88,9 @@ namespace RepositorioAcervosAPI.Controllers
             try
             {
 
-                mapeadorPublicacao.DeletePublicacaoPeloId(idUsuario);
+                mapeadorPublicacao.DeletePublicacaoPeloId(publicacao.Id);
                 retorno.Codigo = 0;
-                retorno.Mensagem = "";
+                retorno.Mensagem = "Publicação deletada com sucesso!";
             }
             catch (Exception)
             {

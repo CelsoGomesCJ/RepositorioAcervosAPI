@@ -70,7 +70,7 @@ namespace RepositorioAcervosAPI.Persistencia
             return publicacoesDoUsuario;
         }
 
-        public void DeletePublicacaoPeloId(int idPublicacao)
+        public void DeletePublicacaoPeloId(long idPublicacao)
         {
             using (var conexao = Conexao.Instancia.CrieConexao())
             {
