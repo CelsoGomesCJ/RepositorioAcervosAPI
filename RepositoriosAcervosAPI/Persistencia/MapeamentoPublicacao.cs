@@ -15,7 +15,7 @@ namespace RepositorioAcervosAPI.Persistencia
     {
 
         //Depois ajusta para pegar a data de publicação de acordo com o LOCALTIMESTAMP
-        public void realizePublicacao(Publicacao publicacao)
+        public Publicacao realizePublicacao(Publicacao publicacao)
         {
             using (var conexao = Conexao.Instancia.CrieConexao())
             {
@@ -43,6 +43,26 @@ namespace RepositorioAcervosAPI.Persistencia
                     comando.ExecuteNonQuery();
                 }
             }
+
+            //Voltar aqui e fazer o código transacionado
+
+            using (var conexao = Conexao.Instancia.CrieConexao())
+            {
+                using (var comando = conexao.CreateCommand())
+                {
+                    comando.CommandText = "@SELECT MAX(ID) FROM publicacao";
+
+                    using (var dr = comando.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            publicacao.Id = dr.GetInt64(0);
+                        }
+                    }
+                }
+            }
+
+            return publicacao;
         }
 
         public List<Publicacao> ObtenhaPublicacoesPeloId(int idUsuario)
@@ -53,7 +73,7 @@ namespace RepositorioAcervosAPI.Persistencia
             {
                 using (var comando = conexao.CreateCommand())
                 {
-                    comando.CommandText = ObtenhaConsultaDeletePublicacaoPeloId();
+                    comando.CommandText = ObtenhaConsultaPublicacoesDoUsuario();
                     comando.Parameters.Add(CrieParametroWithValue("@ID_DISCENTE", idUsuario));
 
                     using (var dr = comando.ExecuteReader())
@@ -93,8 +113,14 @@ namespace RepositorioAcervosAPI.Persistencia
             publicacao.resumo = dr.GetString(4);
             publicacao.autores = dr.GetString(5);
             publicacao.discenteid = dr.GetInt64(9);
+            publicacao.documento = (byte[])dr.GetValue(6);
 
             return publicacao;
+        }
+
+        private static string ObtenhaConsultaPublicacoesDoUsuario()
+        {
+            return @"SELECT * FROM PUBLICACAO WHERE ID_DISCENTE = @ID_DISCENTE";
         }
 
         private string ObtenhaConsultaDeletePublicacaoPeloId()

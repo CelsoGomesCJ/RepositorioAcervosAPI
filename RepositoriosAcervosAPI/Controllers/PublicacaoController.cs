@@ -39,7 +39,7 @@ namespace RepositorioAcervosAPI.Controllers
 
             try
             {
-                mapeadorPublicacao.realizePublicacao(publicacao);
+                retorno.Result = mapeadorPublicacao.realizePublicacao(publicacao);
                 retorno.Codigo = 0;
                 retorno.Mensagem = "Publicação realizada com sucesso!";
             }
@@ -48,9 +48,6 @@ namespace RepositorioAcervosAPI.Controllers
                 retorno.Codigo = 1;
                 retorno.Mensagem = $"Falha ao realizar publicação teste 28/05 \n:{erro.Message}";
             }
-
-            //Código Teste
-            retorno.Result = publicacao;
 
             return retorno;
         }
