@@ -50,7 +50,7 @@ namespace RepositorioAcervosAPI.Persistencia
             {
                 using (var comando = conexao.CreateCommand())
                 {
-                    comando.CommandText = "@SELECT MAX(ID) FROM publicacao";
+                    comando.CommandText = @"SELECT MAX(ID) FROM publicacao";
 
                     using (var dr = comando.ExecuteReader())
                     {
