@@ -90,6 +90,30 @@ namespace RepositorioAcervosAPI.Persistencia
             return publicacoesDoUsuario;
         }
 
+        public List<Publicacao> ObtenhaTodasPublicacoesRepositorio()
+        {
+            var publicacoesDoRepositorio = new List<Publicacao>();
+
+            using (var conexao = Conexao.Instancia.CrieConexao())
+            {
+                using (var comando = conexao.CreateCommand())
+                {
+                    comando.CommandText = @"SELECT * FROM PUBLICACAO";
+
+                    using (var dr = comando.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            var publicacao = MapeiePublicacao(dr);
+                            publicacoesDoRepositorio.Add(publicacao);
+                        }
+                    }
+                }
+            }
+
+            return publicacoesDoRepositorio;
+        }
+
         public void DeletePublicacaoPeloId(long idPublicacao)
         {
             using (var conexao = Conexao.Instancia.CrieConexao())
@@ -143,5 +167,6 @@ namespace RepositorioAcervosAPI.Persistencia
             return @"INSERT INTO public.publicacao(TITULO, SUBTITULO, PALAVRACHAVE, RESUMO, AUTORES, DOCUMENTO, DATA_PUBLICACAO, ID_DISCENTE)
 	                VALUES (@TITULO, @SUBTITULO, @PALAVRACHAVE, @RESUMO, @AUTORES, @DOCUMENTO, @DATA_PUBLICACAO, @ID_DISCENTE)";
         }
+
     }
 }

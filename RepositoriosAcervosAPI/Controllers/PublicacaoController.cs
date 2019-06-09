@@ -97,5 +97,28 @@ namespace RepositorioAcervosAPI.Controllers
 
             return retorno;
         }
+
+
+        [HttpGet]
+        [Route("obtenhatodaspublicacoesrepositorio")]
+        public RetornoPadrao ObtenhaTodasPublicacoesDoRepositorio()
+        {
+            var mapeadorPublicacao = new MapeamentoPublicacao();
+            var retorno = new RetornoPadrao();
+
+            try
+            {
+                retorno.Result = mapeadorPublicacao.ObtenhaTodasPublicacoesRepositorio();
+                retorno.Codigo = 0;
+                retorno.Mensagem = "Publicações obtidas com sucesso";
+            }
+            catch (Exception)
+            {
+                retorno.Codigo = 1;
+                retorno.Mensagem = $"Falha ao obter todas as publicações do repositório";
+            }
+
+            return retorno;
+        }
     }
 }
